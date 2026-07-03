@@ -31,6 +31,20 @@ uv run python manage.py runserver 8000
 
 The frontend login page is prefilled with `demo@example.com`; use the password you chose when creating the superuser. Django's default auth uses `username`, so this project treats the username as the login email.
 
+## Render deployment
+
+Use these settings for a Render Python web service:
+
+- Root Directory: `backend`
+- Build Command: `uv sync && uv run python manage.py migrate`
+- Start Command: `uv run gunicorn config.wsgi:application --bind 0.0.0.0:$PORT`
+
+Recommended environment variables:
+
+- `DEBUG=False`
+- `SECRET_KEY=<generate-a-secure-secret>`
+- `FRONTEND_URL=<your deployed frontend URL>`
+
 ## API overview
 
 - `POST /api/auth/login/` — session login with email/password

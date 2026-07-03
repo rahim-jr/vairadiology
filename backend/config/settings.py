@@ -1,10 +1,15 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "dev-only-secret-key-change-me"
-DEBUG = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-secret-key-change-me")
+DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
+
+render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", ".onrender.com"]
+if render_hostname:
+    ALLOWED_HOSTS.append(render_hostname)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -68,15 +73,20 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+frontend_url = os.environ.get("FRONTEND_URL")
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+if frontend_url:
+    CORS_ALLOWED_ORIGINS.append(frontend_url.rstrip("/"))
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+if frontend_url:
+    CSRF_TRUSTED_ORIGINS.append(frontend_url.rstrip("/"))
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [],
