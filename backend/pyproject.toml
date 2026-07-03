@@ -1,0 +1,12 @@
+[project]
+name = "vairadiologytask-backend"
+version = "0.1.0"
+description = "Django backend for task management and image annotation"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "django>=5.0,<6.0",
+    "djangorestframework>=3.15,<4.0",
+    "django-cors-headers>=4.3,<5.0",
+    "pillow>=10.0,<12.0",
+]
